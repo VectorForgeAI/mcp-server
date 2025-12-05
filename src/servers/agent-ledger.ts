@@ -13,7 +13,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { createVectorForgeClient } from '@vectorforge/sdk';
+import { createVectorForgeClient } from '@vectorforge-ai/sdk';
 import type { AgentActionResult } from '../types/mcp-schemas.js';
 
 const server = new Server(

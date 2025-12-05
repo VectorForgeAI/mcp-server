@@ -11,7 +11,7 @@
 export type {
   RegisterResult,
   VerifyResult,
-} from '@vectorforge/sdk';
+} from '@vectorforge-ai/sdk';
 
 // Worldstate response types
 export interface WorldstateCreateResult {

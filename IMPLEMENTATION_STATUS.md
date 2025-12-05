@@ -123,7 +123,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { createVectorForgeClient } from '@vectorforge/sdk';
+import { createVectorForgeClient } from '@vectorforge-ai/sdk';
 
 const server = new Server(
   { name: 'vectorforge-{name}', version: '0.1.0' },

@@ -11,7 +11,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { createVectorForgeClient } from '@vectorforge/sdk';
+import { createVectorForgeClient } from '@vectorforge-ai/sdk';
 import type { RegisterResult, VerifyResult } from '../types/mcp-schemas.js';
 
 const server = new Server(
@@ -219,7 +219,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       // If content provided with hash_mode, recompute hash
       if (content && hash_mode) {
-        const { canon } = await import('@vectorforge/sdk');
+        const { canon } = await import('@vectorforge-ai/sdk');
         let computedHash: string;
 
         switch (hash_mode) {
