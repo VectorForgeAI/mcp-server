@@ -1,0 +1,39 @@
+name: security
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'   # Mondays 12:00 UTC
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  gitleaks:
+    name: secrets in history
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Use the gitleaks binary directly, not gitleaks-action@v2, which now
+      # requires a paid GITLEAKS_LICENSE for organization repos. The binary
+      # is free and unrestricted.
+      - name: Install gitleaks
+        run: |
+          GITLEAKS_VERSION=8.18.4
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin gitleaks
+      - name: Scan history for secrets
+        run: gitleaks detect --source . --redact --no-banner
+
+  osv-scanner:
+    # OSV-Scanner via official Docker image. No install dance, no GHAS
+    # dependency, no SARIF upload. Findings surface in the job log.
+    name: OSV-Scanner
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/google/osv-scanner:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan
+        run: /osv-scanner scan source --recursive ./

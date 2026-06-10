@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Mirror what CI does. Run whichever scripts exist; fail on first error.
+set -e
+[ -f package.json ] || exit 0
+PKG_RUN="pnpm run"
+command -v pnpm >/dev/null 2>&1 || PKG_RUN="npm run"
+has_script() { node -e "p=require('./package.json'); process.exit(p.scripts && p.scripts['$1']?0:1)" 2>/dev/null; }
+if has_script check; then $PKG_RUN check; fi
+if has_script lint; then $PKG_RUN lint; fi
+if has_script typecheck; then $PKG_RUN typecheck; fi
+if has_script test; then $PKG_RUN test; fi
+echo "[pre-push] ok"
