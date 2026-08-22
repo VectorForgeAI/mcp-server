@@ -1,24 +1,43 @@
+# Managed by scripts/dependabot-normalize.py.
+#
+# Two groups per ecosystem on purpose: everything patch and minor arrives
+# as one pull request that merges itself once CI is green, and everything
+# major arrives as a single pull request that waits for a human. Without
+# the major group, each major bump opened its own PR that auto-merge was
+# never allowed to touch, which is how 367 of them accumulated.
 version: 2
 
 updates:
   - package-ecosystem: npm
-    directory: "/"
+    directories: ["/**"]
     schedule:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
     groups:
       patch-and-minor:
+        patterns: ["*"]
         update-types: [patch, minor]
-    labels: [dependencies]
+      major:
+        patterns: ["*"]
+        update-types: [major]
+    labels: [dependencies, npm]
     commit-message:
       prefix: "chore(deps)"
 
   - package-ecosystem: github-actions
-    directory: "/"
+    directories: ["/**"]
     schedule:
       interval: weekly
       day: monday
+    open-pull-requests-limit: 5
+    groups:
+      patch-and-minor:
+        patterns: ["*"]
+        update-types: [patch, minor]
+      major:
+        patterns: ["*"]
+        update-types: [major]
     labels: [dependencies, github-actions]
     commit-message:
       prefix: "chore(actions)"
